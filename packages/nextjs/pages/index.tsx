@@ -3,20 +3,22 @@ import { ZKEdDSAEventTicketPCDPackage } from "@pcd/zk-eddsa-event-ticket-pcd";
 import type { NextPage } from "next";
 import { hexToBigInt } from "viem";
 import { useAccount } from "wagmi";
-import { isZupassPublicKey, useZuAuth } from "zupass-auth";
+import { useZuAuth } from "zuauth";
 import { MetaHeader } from "~~/components/MetaHeader";
 import { useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 import { notification } from "~~/utils/scaffold-eth";
 import { generateWitness } from "~~/utils/scaffold-eth/pcd";
-import { DEVCONNECT_VALID_EVENT_IDS } from "~~/utils/zupassConstants";
+import { VALID_EVENT_IDS } from "~~/utils/zupassConstants";
 
 // Get a valid event id from { supportedEvents } from "zuauth" or https://api.zupass.org/issue/known-ticket-types
-const validEventIds = DEVCONNECT_VALID_EVENT_IDS;
+const validEventIds = VALID_EVENT_IDS;
 const fieldsToReveal = {
   revealAttendeeEmail: true,
   revealEventId: true,
   revealProductId: true,
+  revealIsConsumed: true,
 };
+const productIds = validEventIds;
 
 const Home: NextPage = () => {
   const [verifiedFrontend, setVerifiedFrontend] = useState(false);
@@ -30,7 +32,7 @@ const Home: NextPage = () => {
       notification.error("Please connect wallet");
       return;
     }
-    authenticate(fieldsToReveal, connectedAddress, validEventIds);
+    authenticate(fieldsToReveal, connectedAddress, validEventIds, [productIds]);
   }, [authenticate, connectedAddress]);
 
   const verifyProofFrontend = async () => {
@@ -50,8 +52,13 @@ const Home: NextPage = () => {
       return;
     }
 
-    if (!isZupassPublicKey(deserializedPCD.claim.signer)) {
+    if ("1ebfb986fbac5113f8e2c72286fe9362f8e7d211dbc68227a468d7b919e75003" != deserializedPCD.claim.signer[0]) {
       notification.error(`[ERROR Frontend] PCD is not signed by Zupass`);
+      return;
+    }
+
+    if (!deserializedPCD.claim.partialTicket.isConsumed) {
+      notification.error(`[ERROR Frontend] Ticket not consumed`);
       return;
     }
 
