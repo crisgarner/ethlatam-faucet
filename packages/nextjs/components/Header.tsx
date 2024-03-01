@@ -1,9 +1,8 @@
 import React, { useCallback, useRef, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Bars3Icon, BugAntIcon } from "@heroicons/react/24/outline";
-import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
+import { Bars3Icon, BanknotesIcon, GlobeAmericasIcon, Square3Stack3DIcon } from "@heroicons/react/24/outline";
+import { RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
 
 interface HeaderMenuLink {
@@ -14,13 +13,19 @@ interface HeaderMenuLink {
 
 export const menuLinks: HeaderMenuLink[] = [
   {
-    label: "Home",
+    label: "Faucet",
     href: "/",
+    icon: <Square3Stack3DIcon className="h-4 w-4" />,
   },
   {
-    label: "Debug Contracts",
+    label: "Agenda",
+    href: "/a",
+    icon: <GlobeAmericasIcon className="h-4 w-4" />,
+  },
+  {
+    label: "Ronda de QF",
     href: "/debug",
-    icon: <BugAntIcon className="h-4 w-4" />,
+    icon: <BanknotesIcon className="h-4 w-4" />,
   },
 ];
 
@@ -86,22 +91,12 @@ export const Header = () => {
             </ul>
           )}
         </div>
-        <Link href="/" passHref className="hidden lg:flex items-center gap-2 ml-4 mr-6 shrink-0">
-          <div className="flex relative w-10 h-10">
-            <Image alt="SE2 logo" className="cursor-pointer" fill src="/logo.svg" />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-bold leading-tight">Scaffold-ETH</span>
-            <span className="text-xs">Ethereum dev stack</span>
-          </div>
-        </Link>
         <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">
           <HeaderMenuLinks />
         </ul>
       </div>
       <div className="navbar-end flex-grow mr-4">
         <RainbowKitCustomConnectButton />
-        <FaucetButton />
       </div>
     </div>
   );

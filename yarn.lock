@@ -3947,7 +3947,7 @@ __metadata:
     vercel: ^28.15.1
     viem: ^1.16.6
     wagmi: 1.4.4
-    zuauth: ^0.4.0
+    zuauth: ^0.5.0
     zustand: ^4.1.2
   languageName: unknown
   linkType: soft
@@ -18915,9 +18915,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zuauth@npm:^0.4.0":
-  version: 0.4.0
-  resolution: "zuauth@npm:0.4.0"
+"zuauth@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "zuauth@npm:0.5.0"
   dependencies:
     "@pcd/eddsa-ticket-pcd": ^0.3.0
     "@pcd/pcd-types": ^0.8.0
@@ -18925,7 +18925,7 @@ __metadata:
     "@pcd/zk-eddsa-event-ticket-pcd": ^0.2.1
     react: ^18
     react-dom: ^18
-  checksum: 265ec51aba09cf0ae76003cbd914316a3d07d105cf5289fad456f171fe15e06a13144ff3bb49d96304b1993e24950b826cebe2d624c3f8ecd2ae7061c6767668
+  checksum: 4dfe4300cc59ef880da35a07bfafa5164b8ef021e5ad275f624648c167fdb69787f338ffca584b52a272b9ab2905a3d952a169ea2e1580dc26809c3a8161c8c5
   languageName: node
   linkType: hard
 
