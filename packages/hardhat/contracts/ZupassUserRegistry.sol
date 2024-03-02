@@ -9,25 +9,30 @@ import './IUserRegistry.sol';
 /**
  * @dev A simple user registry managed by a trusted entity.
  */
-contract SimpleUserRegistry is Ownable, IUserRegistry {
+contract ZupassUserRegistry is Ownable, IUserRegistry {
 
   mapping(address => bool) private users;
+  mapping(uint256 => bool) private semaphoreIds;
+  mapping(address => uint256) private userTosemaphoreId;
 
   // Events
-  event UserAdded(address indexed _user);
+  event UserAdded(address indexed _user, uint256 _semaphoreId);
   event UserRemoved(address indexed _user);
 
   /**
     * @dev Add verified unique user to the registry.
     */
-  function addUser(address _user)
+  function addUser(address _user, uint256 _semaphoreId)
     external
     onlyOwner
   {
     require(_user != address(0), 'UserRegistry: User address is zero');
     require(!users[_user], 'UserRegistry: User already verified');
+    require(!semaphoreIds[_semaphoreId], 'UserRegistry: Semaphore Id already registred' );
     users[_user] = true;
-    emit UserAdded(_user);
+    semaphoreIds[_semaphoreId] = true;
+    userTosemaphoreId[_user] = _semaphoreId;
+    emit UserAdded(_user, _semaphoreId);
   }
 
   /**
@@ -38,7 +43,10 @@ contract SimpleUserRegistry is Ownable, IUserRegistry {
     onlyOwner
   {
     require(users[_user], 'UserRegistry: User is not in the registry');
+    uint256 _semaphoreId = userTosemaphoreId[_user];
     delete users[_user];
+    delete semaphoreIds[_semaphoreId];
+    delete userTosemaphoreId[_user];
     emit UserRemoved(_user);
   }
 
@@ -52,6 +60,17 @@ contract SimpleUserRegistry is Ownable, IUserRegistry {
     returns (bool)
   {
     return users[_user];
+  }
+
+  /**
+    * @dev Check if the semaphore Id is verified.
+    */
+  function isVerifiedSemaphoreId(uint256 _semaphoreId)
+    external
+    view
+    returns (bool)
+  {
+    return semaphoreIds[_semaphoreId];
   }
 
 }

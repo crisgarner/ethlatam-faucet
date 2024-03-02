@@ -1,6 +1,5 @@
 import DaiContract from "../../../hardhat/deployments/localhost/DAI.json";
-import SimpleUserRegistryContract from "../../../hardhat/deployments/localhost/SimpleUserRegistry.json";
-import ETHLatamNullifierContract from "../../../hardhat/deployments/localhost/ETHLatamNullifier.json";
+import ZupassUserRegistryContract from "../../../hardhat/deployments/localhost/ZupassUserRegistry.json";
 import { ZKEdDSAEventTicketPCDPackage } from "@pcd/zk-eddsa-event-ticket-pcd";
 import { NextApiRequest, NextApiResponse } from "next";
 import { hexToBigInt } from "viem";
@@ -25,7 +24,7 @@ const daiDrop = parseEther("10");
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const pcd = await ZKEdDSAEventTicketPCDPackage.deserialize(req.body.pcd);
   const address = req.body.address;
-  const id = pcd.claim.partialTicket.attendeeSemaphoreId;
+  const semaphoreId = pcd.claim.partialTicket.attendeeSemaphoreId;
 
   // ## Validations
   if (!isAddress(address)) {
@@ -57,28 +56,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // TODO: Check that the event id is the one we expect
 
   const isVerified = await client.readContract({
-    address: SimpleUserRegistryContract.address,
-    abi: SimpleUserRegistryContract.abi,
-    functionName: "isVerifiedUser",
-    args: [address],
+    address: ZupassUserRegistryContract.address,
+    abi: ZupassUserRegistryContract.abi,
+    functionName: "isVerifiedSemaphoreId",
+    args: [semaphoreId],
   });
-
-  const isNullified = await client.readContract({
-    address: ETHLatamNullifierContract.address,
-    abi: ETHLatamNullifierContract.abi,
-    functionName: "isVerifiedUser",
-    args: [id],
-  });
-
-  if (isNullified) {
-    console.error(`[ERROR] User already registred`);
-    // return res.status(401).send("User already registred");
-    return res.status(200).json({
-        error: true,
-        pcd:pcd,
-        message: `Zupass Already registred!`,
-      });
-  }
 
   if (isVerified) {
     console.error(`[ERROR] User already registred`);
@@ -86,25 +68,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(200).json({
         error: true,
         pcd:pcd,
-        message: `Address Already registred!`,
+        message: `Usuario ya registrado!`,
       });
   }
 
   // ## Actions
-  await localWalletClient.writeContract({
-    account: accounts[0],
-    address: ETHLatamNullifierContract.address,
-    abi: ETHLatamNullifierContract.abi,
-    functionName: "addUser",
-    args: [id],
-  });
-
   const registryResult = await localWalletClient.writeContract({
     account: accounts[0],
-    address: SimpleUserRegistryContract.address,
-    abi: SimpleUserRegistryContract.abi,
+    address: ZupassUserRegistryContract.address,
+    abi: ZupassUserRegistryContract.abi,
     functionName: "addUser",
-    args: [address],
+    args: [address, semaphoreId],
   });
 
   // Send ETH to the user. This is just for testing purposes, and it could be any backend action.
@@ -121,9 +95,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     functionName: "transfer",
     args: [address, daiDrop],
   });
-
-  //TODO: add to user registry and send gas
-  //TODO: check if user is not on list already
 
   return res.status(200).json({
     message: `🎉 PCD verified! You can vote now! Also 0.0015 ETH and 10 DAIs have been sent to ${address}!`,
