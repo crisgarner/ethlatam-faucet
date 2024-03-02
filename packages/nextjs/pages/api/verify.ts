@@ -4,6 +4,7 @@ import { ZKEdDSAEventTicketPCDPackage } from "@pcd/zk-eddsa-event-ticket-pcd";
 import { NextApiRequest, NextApiResponse } from "next";
 import { hexToBigInt } from "viem";
 import { createPublicClient, createWalletClient, http, isAddress, parseEther } from "viem";
+import { mnemonicToAccount } from "viem/accounts";
 import { hardhat } from "viem/chains";
 
 const localWalletClient = createWalletClient({
@@ -16,7 +17,8 @@ const client = createPublicClient({
   transport: http(),
 });
 
-const accounts = await localWalletClient.getAddresses();
+// const accounts = await localWalletClient.getAddresses();
+const account = mnemonicToAccount(process.env.MNEMONIC as string);
 
 const gasDrop = parseEther("0.0015");
 const daiDrop = parseEther("10");
@@ -66,15 +68,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.error(`[ERROR] User already registred`);
     // return res.status(401).send("User already registred");
     return res.status(200).json({
-        error: true,
-        pcd:pcd,
-        message: `Usuario ya registrado!`,
-      });
+      error: true,
+      pcd: pcd,
+      message: `Usuario ya registrado!`,
+    });
   }
 
   // ## Actions
   const registryResult = await localWalletClient.writeContract({
-    account: accounts[0],
+    account: account,
     address: ZupassUserRegistryContract.address,
     abi: ZupassUserRegistryContract.abi,
     functionName: "addUser",
@@ -85,11 +87,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   await localWalletClient.sendTransaction({
     to: req.body.address,
     value: gasDrop,
-    account: accounts[0],
+    account: account,
   });
 
   await localWalletClient.writeContract({
-    account: accounts[0],
+    account: account,
     address: DaiContract.address,
     abi: DaiContract.abi,
     functionName: "transfer",
