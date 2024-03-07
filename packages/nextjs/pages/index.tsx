@@ -1,4 +1,5 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
+import Link from "next/link";
 import { ZKEdDSAEventTicketPCDPackage } from "@pcd/zk-eddsa-event-ticket-pcd";
 import type { NextPage } from "next";
 import { hexToBigInt } from "viem";
@@ -24,6 +25,7 @@ const Home: NextPage = () => {
   const [verifiedOnChain, setVerifiedOnChain] = useState(false);
   const { authenticate, pcd } = useZuAuth();
   const { address: connectedAddress } = useAccount();
+  const faucetRef = useRef<null | HTMLDivElement>(null);
 
   const getProof = useCallback(async () => {
     if (!connectedAddress) {
@@ -114,89 +116,108 @@ const Home: NextPage = () => {
     args: [connectedAddress],
   });
 
+  const scrollToFaucet = () => {
+    if (faucetRef && faucetRef.current !== null) {
+      faucetRef.current.scrollIntoView();
+    }
+  };
+
   return (
     <>
       <MetaHeader />
-      <div className="flex flex-col items-center mt-24">
-        <div className="card max-w-[90%] sm:max-w-lg bg-base-100 shadow-xl">
-          <div className="card-body">
-            <h2 className="card-title">Zupass: Scaffold-ETH 2 Starter Kit</h2>
-            <p className="mt-0">
-              Get started with{" "}
-              <a className="link" href="https://github.com/proofcarryingdata/zupass" target="_blank">
-                Zupass
-              </a>{" "}
-              to verify PCDs (Proof-Carrying Data). <span className="font-bold">e.g.</span> Devconnect tickets.
-            </p>
-            <p className="text-sm m-0">
-              - Check
-              <code className="mx-1 px-1 italic bg-base-300 font-bold max-w-full break-words break-all inline-block">
-                packages/nextjs/pages/index.tsx
-              </code>
-              to learn how to ask Zupass for a zero knowledge proof.
-            </p>
-            <p className="text-sm m-0">
-              - Check
-              <code className="mx-1 px-1 italic bg-base-300 font-bold max-w-full break-words break-all inline-block">
-                packages/nextjs/pages/api/verify.tsx
-              </code>
-              to learn how to verify the proof on the backend and execute any action (in this example it will send 1 ETH
-              to the connected address).
-            </p>
-            <div className="flex flex-col gap-4 mt-6">
-              <div className="tooltip" data-tip="Loads the Zupass UI in a modal, where you can prove your PCD.">
-                <button className="btn btn-secondary w-full tooltip" onClick={getProof} disabled={!!pcd}>
-                  {!pcd ? "1. Get Proof" : "1. Proof Received!"}
-                </button>
-              </div>
-              <div className="tooltip" data-tip="When you get back the PCD, verify it on the frontend.">
-                <button
-                  className="btn btn-primary w-full"
-                  disabled={!pcd || verifiedFrontend}
-                  onClick={verifyProofFrontend}
-                >
-                  2. Verify (frontend)
-                </button>
-              </div>
-              <div className="tooltip" data-tip="Send the PCD to the server to verify it and execute any action.">
-                <button
-                  className="btn btn-primary w-full"
-                  disabled={!verifiedFrontend || verifiedBackend}
-                  onClick={sendPCDToServer}
-                >
-                  3. Verify (backend) and send ETH
-                </button>
-              </div>
-              <div className="tooltip" data-tip="Submit the proof to a smart contract to verify it on-chain.">
-                <button
-                  className="btn btn-primary w-full"
-                  disabled={!verifiedBackend || verifiedOnChain}
-                  onClick={async () => {
-                    try {
-                      await mintNFT();
-                    } catch (e) {
-                      notification.error(`Error: ${e}`);
-                      return;
-                    }
-                    setVerifiedOnChain(true);
-                  }}
-                >
-                  {isMintingNFT ? <span className="loading loading-spinner"></span> : "4. Verify (on-chain) and mint"}
-                </button>
-              </div>
-              <div className="flex justify-center">
-                <button
-                  className="btn btn-ghost text-error underline normal-case"
-                  onClick={() => {
-                    setVerifiedFrontend(false);
-                  }}
-                >
-                  Reset
-                </button>
-              </div>
-              <div className="text-center text-xl">
-                {yourBalance && yourBalance >= 1n ? "🎉 🍾 proof verified in contract!!! 🥂 🎊" : ""}
-              </div>
+      <div className="h-screen flex flex-col items-center justify-center gap-16 px-8">
+        <h1 className="font-pixel">Welcome to ETH Latam Faucet!</h1>
+        <div className="w-full flex flex-row justify-evenly font-pixel">
+          <Link className="px-6 py-2 color-secondary border-4 border-secondary shadow-secondary" href="/debug">
+            <h3>DEBUG CONTRACTS</h3>
+          </Link>
+          <button className="px-6 py-2 color-primary border-4 border-primary shadow-primary" onClick={scrollToFaucet}>
+            <h3>USE FAUCET</h3>
+          </button>
+        </div>
+      </div>
+      <div className="h-screen flex flex-col items-center justify-center font-helvetica" ref={faucetRef}>
+        <h2 className="font-pixel">Use Faucet</h2>
+        <div className="max-w-[50%]">
+          <p>
+            Get started with{" "}
+            <a className="link" href="https://github.com/proofcarryingdata/zupass" target="_blank">
+              Zupass
+            </a>{" "}
+            to verify PCDs (Proof-Carrying Data). <span className="font-bold">e.g.</span> Devconnect tickets.
+          </p>
+          <p className="text-sm">
+            - Check
+            <code className="mx-1 px-1 italic font-bold max-w-full break-words break-all inline-block">
+              packages/nextjs/pages/index.tsx
+            </code>
+            to learn how to ask Zupass for a zero knowledge proof.
+          </p>
+          <p className="text-sm">
+            - Check
+            <code className="mx-1 px-1 italic font-bold max-w-full break-words break-all inline-block">
+              packages/nextjs/pages/api/verify.tsx
+            </code>
+            to learn how to verify the proof on the backend and execute any action (in this example it will send 1 ETH
+            to the connected address).
+          </p>
+          <div className="flex flex-col w-full gap-4 mt-8 font-pixel">
+            <div className="tooltip" data-tip="Loads the Zupass UI in a modal, where you can prove your PCD.">
+              <button
+                className="border-4 border-secondary shadow-secondary w-full p-4 disabled:opacity-30"
+                onClick={getProof}
+                disabled={!!pcd}
+              >
+                {!pcd ? "1. Get Proof" : "1. Proof Received!"}
+              </button>
+            </div>
+            <div className="tooltip" data-tip="When you get back the PCD, verify it on the frontend.">
+              <button
+                className="w-full p-4 border-4 border-primary shadow-primary disabled:opacity-30"
+                disabled={!pcd || verifiedFrontend}
+                onClick={verifyProofFrontend}
+              >
+                2. Verify (frontend)
+              </button>
+            </div>
+            <div className="tooltip" data-tip="Send the PCD to the server to verify it and execute any action.">
+              <button
+                className="w-full p-4 border-4 border-primary shadow-primary disabled:opacity-30"
+                disabled={!verifiedFrontend || verifiedBackend}
+                onClick={sendPCDToServer}
+              >
+                3. Verify (backend) and send ETH
+              </button>
+            </div>
+            <div className="tooltip" data-tip="Submit the proof to a smart contract to verify it on-chain.">
+              <button
+                className="w-full p-4 border-4 border-primary shadow-primary disabled:opacity-30"
+                disabled={!verifiedBackend || verifiedOnChain}
+                onClick={async () => {
+                  try {
+                    await mintNFT();
+                  } catch (e) {
+                    notification.error(`Error: ${e}`);
+                    return;
+                  }
+                  setVerifiedOnChain(true);
+                }}
+              >
+                {isMintingNFT ? <span className="loading loading-spinner"></span> : "4. Verify (on-chain) and mint"}
+              </button>
+            </div>
+            <div className="flex justify-center">
+              <button
+                className="btn btn-ghost text-error underline normal-case"
+                onClick={() => {
+                  setVerifiedFrontend(false);
+                }}
+              >
+                Reset
+              </button>
+            </div>
+            <div className="text-center text-xl">
+              {yourBalance && yourBalance >= 1n ? "🎉 🍾 proof verified in contract!!! 🥂 🎊" : ""}
             </div>
           </div>
         </div>
