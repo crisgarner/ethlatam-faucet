@@ -71,7 +71,7 @@ export const RainbowKitCustomConnectButton = () => {
                       </li>
                       <li>
                         <button
-                          className="menu-item text-error btn-sm !rounded-xl flex gap-3 py-3"
+                          className="menu-item text-error btn-sm flex gap-3 py-3"
                           type="button"
                           onClick={() => disconnect()}
                         >
@@ -100,7 +100,7 @@ export const RainbowKitCustomConnectButton = () => {
                     <ul tabIndex={0} className="dropdown-content menu z-[2] p-2 bg-base-300 gap-1">
                       <li>
                         {addressCopied ? (
-                          <div className="btn-sm !rounded-xl flex gap-3 py-3">
+                          <div className="btn-sm flex gap-3 py-3">
                             <CheckCircleIcon
                               className="text-xl font-normal h-6 w-4 cursor-pointer ml-2 sm:ml-0"
                               aria-hidden="true"
@@ -117,7 +117,7 @@ export const RainbowKitCustomConnectButton = () => {
                               }, 800);
                             }}
                           >
-                            <div className="btn-sm !rounded-xl flex gap-3 py-3">
+                            <div className="btn-sm flex gap-3 py-3">
                               <DocumentDuplicateIcon
                                 className="text-xl font-normal h-6 w-4 cursor-pointer ml-2 sm:ml-0"
                                 aria-hidden="true"
@@ -128,13 +128,13 @@ export const RainbowKitCustomConnectButton = () => {
                         )}
                       </li>
                       <li>
-                        <label htmlFor="qrcode-modal" className="btn-sm !rounded-xl flex gap-3 py-3">
+                        <label htmlFor="qrcode-modal" className="btn-sm flex gap-3 py-3">
                           <QrCodeIcon className="h-6 w-4 ml-2 sm:ml-0" />
                           <span className="whitespace-nowrap">Ver Código QR</span>
                         </label>
                       </li>
                       <li>
-                        <button className="menu-item btn-sm !rounded-xl flex gap-3 py-3" type="button">
+                        <button className="menu-item btn-sm flex gap-3 py-3" type="button">
                           <ArrowTopRightOnSquareIcon className="h-6 w-4 ml-2 sm:ml-0" />
                           <a
                             target="_blank"
@@ -148,7 +148,7 @@ export const RainbowKitCustomConnectButton = () => {
                       </li>
                       <li>
                         <button
-                          className="menu-item text-error btn-sm !rounded-xl flex gap-3 py-3"
+                          className="menu-item text-error btn-sm flex gap-3 py-3"
                           type="button"
                           onClick={() => disconnect()}
                         >
@@ -160,16 +160,16 @@ export const RainbowKitCustomConnectButton = () => {
                   <div>
                     <input type="checkbox" id="qrcode-modal" className="modal-toggle" />
                     <label htmlFor="qrcode-modal" className="modal cursor-pointer">
-                      <label className="modal-box relative">
+                      <label className="modal-box relative bg-white rounded-none shadow-primary border-4 border-primary">
                         {/* dummy input to capture event onclick on modal box */}
                         <input className="h-0 w-0 absolute top-0 left-0" />
                         <label
                           htmlFor="qrcode-modal"
-                          className="btn btn-ghost btn-sm btn-circle absolute right-3 top-3"
+                          className="btn btn-primary btn-sm btn-circle absolute right-3 top-3"
                         >
                           ✕
                         </label>
-                        <div className="space-y-3 py-6">
+                        <div className="space-y-3 py-6 text-black break-all sm:break-normal">
                           <div className="flex space-x-4 flex-col items-center gap-6">
                             <QRCodeSVG value={account.address} size={256} />
                             <Address address={account.address} format="long" disableAddressLink />

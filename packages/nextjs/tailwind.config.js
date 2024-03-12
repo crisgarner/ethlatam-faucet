@@ -14,13 +14,13 @@ module.exports = {
           "secondary-content": "#000000",
           accent: "#80ff9f",
           "accent-content": "#000000",
-          neutral: "#212638",
-          "neutral-content": "#ffffff",
-          "base-100": "#ffffff",
-          "base-200": "#f4f8ff",
-          "base-300": "#000000",
-          "base-content": "#212638",
-          info: "#93BBFB",
+          neutral: "#F9FBFF",
+          "neutral-content": "#385183",
+          "base-100": "#000000",
+          "base-200": "#faf7f5",
+          "base-300": "#ffffff",
+          "base-content": "#ffffff",
+          info: "#385183",
           success: "#34EEB6",
           warning: "#FFCF72",
           error: "#FF8863",
@@ -29,6 +29,7 @@ module.exports = {
 
           ".tooltip": {
             "--tooltip-tail": "6px",
+            "--tooltip-color": "hsl(var(--p))",
           },
           ".link": {
             textUnderlineOffset: "2px",

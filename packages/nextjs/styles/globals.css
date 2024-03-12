@@ -44,6 +44,11 @@ p {
   @apply shadow-none;
 }
 
+.menu li > *:not(ul):not(.menu-title):not(details):hover, .menu li > *:not(ul):not(.menu-title):not(details):active{
+  @apply bg-primary;
+  @apply rounded-none;
+}
+
 @font-face {
   font-family: 'Pixel';
   src: url('../fonts/NeuePixelGrotesk.ttf') format('opentype');
@@ -62,5 +67,19 @@ p {
  @layer components {
   .grayscale {
     filter: grayscale(100%);
+  }
+ }
+
+ @media (max-width: 640px) {
+  h1 {
+    @apply text-4xl;
+  }
+
+  h2 {
+    @apply text-2xl;
+  }
+
+  h3 {
+    @apply text-lg;
   }
  }
