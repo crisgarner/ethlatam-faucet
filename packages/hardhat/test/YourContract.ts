@@ -34,15 +34,15 @@ describe("FaucetVault", function () {
     });
 
     it("Should allow owner to send funds for voting", async function () {
-        //   const newGreeting = "Learn Scaffold-ETH 2! :)";
-        //   await yourContract.setGreeting(newGreeting);
-        //   expect(await yourContract.greeting()).to.equal(newGreeting);
-      });
+      //   const newGreeting = "Learn Scaffold-ETH 2! :)";
+      //   await yourContract.setGreeting(newGreeting);
+      //   expect(await yourContract.greeting()).to.equal(newGreeting);
+    });
 
-      it("Should allow coordinator to send funds to treasury after two weeks", async function () {
-        //   const newGreeting = "Learn Scaffold-ETH 2! :)";
-        //   await yourContract.setGreeting(newGreeting);
-        //   expect(await yourContract.greeting()).to.equal(newGreeting);
-      });
+    it("Should allow coordinator to send funds to treasury after two weeks", async function () {
+      //   const newGreeting = "Learn Scaffold-ETH 2! :)";
+      //   await yourContract.setGreeting(newGreeting);
+      //   expect(await yourContract.greeting()).to.equal(newGreeting);
+    });
   });
 });

@@ -8,11 +8,11 @@ export const TransactionsTable = ({ blocks, transactionReceipts }: TransactionsT
   const targetNetwork = getTargetNetwork();
 
   return (
-    <div className="flex justify-center px-4 md:px-0">
-      <div className="overflow-x-auto w-full shadow-2xl rounded-xl">
-        <table className="table text-xl bg-base-100 table-zebra w-full md:table-md table-sm">
-          <thead>
-            <tr className="rounded-xl text-sm text-base-content">
+    <div className="flex justify-center px-4 md:px-0 shadow-none md:shadow-primary">
+      <div className="overflow-x-auto w-full">
+        <table className="table text-xl bg-base-100 border-4 border-primary w-full md:table-md table-sm">
+          <thead className="font-pixel">
+            <tr className="text-sm text-base-content">
               <th className="bg-primary">Transaction Hash</th>
               <th className="bg-primary">Function Called</th>
               <th className="bg-primary">Block Number</th>
@@ -30,7 +30,7 @@ export const TransactionsTable = ({ blocks, transactionReceipts }: TransactionsT
                 const functionCalled = tx.input.substring(0, 10);
 
                 return (
-                  <tr key={tx.hash} className="hover text-sm">
+                  <tr key={tx.hash} className="hover:bg-base-200 hover:text-base-100 text-sm border-primary">
                     <td className="w-1/12 md:py-4">
                       <TransactionHash hash={tx.hash} />
                     </td>

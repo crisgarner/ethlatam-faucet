@@ -1,19 +1,19 @@
 import DaiContract from "../../../hardhat/deployments/localhost/DAI.json";
-import ZupassUserRegistryContract from "../../../hardhat/deployments/localhost/ZupassUserRegistry.json";
+import SemaphoreUserRegistryContract from "../../../hardhat/deployments/localhost/SemaphoreUserRegistry.json";
 import { ZKEdDSAEventTicketPCDPackage } from "@pcd/zk-eddsa-event-ticket-pcd";
 import { NextApiRequest, NextApiResponse } from "next";
 import { hexToBigInt } from "viem";
 import { createPublicClient, createWalletClient, http, isAddress, parseEther } from "viem";
 import { mnemonicToAccount } from "viem/accounts";
-import { hardhat } from "viem/chains";
+import { optimism } from "viem/chains";
 
 const localWalletClient = createWalletClient({
-  chain: hardhat,
+  chain: optimism,
   transport: http(),
 });
 
 const client = createPublicClient({
-  chain: hardhat,
+  chain: optimism,
   transport: http(),
 });
 
@@ -21,12 +21,16 @@ const client = createPublicClient({
 const account = mnemonicToAccount(process.env.MNEMONIC as string);
 
 const gasDrop = parseEther("0.0015");
-const daiDrop = parseEther("10");
+const daiDrop = parseEther("1");
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const pcd = await ZKEdDSAEventTicketPCDPackage.deserialize(req.body.pcd);
   const address = req.body.address;
   const semaphoreId = pcd.claim.partialTicket.attendeeSemaphoreId;
+  const transactionCount = await client.getTransactionCount({
+    address: account.address,
+  });
+  console.log(transactionCount);
 
   // ## Validations
   if (!isAddress(address)) {
@@ -58,8 +62,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // TODO: Check that the event id is the one we expect
 
   const isVerified = await client.readContract({
-    address: ZupassUserRegistryContract.address,
-    abi: ZupassUserRegistryContract.abi,
+    address: "0xCb93dfe111e8441367bb58457AaaF5c2fd4C525B",
+    abi: SemaphoreUserRegistryContract.abi,
     functionName: "isVerifiedSemaphoreId",
     args: [semaphoreId],
   });
@@ -77,10 +81,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // ## Actions
   const registryResult = await localWalletClient.writeContract({
     account: account,
-    address: ZupassUserRegistryContract.address,
-    abi: ZupassUserRegistryContract.abi,
+    address: "0xCb93dfe111e8441367bb58457AaaF5c2fd4C525B",
+    abi: SemaphoreUserRegistryContract.abi,
     functionName: "addUser",
     args: [address, semaphoreId],
+    nonce: transactionCount,
   });
 
   // Send ETH to the user. This is just for testing purposes, and it could be any backend action.
@@ -88,14 +93,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     to: req.body.address,
     value: gasDrop,
     account: account,
+    nonce: transactionCount + 1,
   });
 
   await localWalletClient.writeContract({
     account: account,
-    address: DaiContract.address,
+    address: "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1",
     abi: DaiContract.abi,
     functionName: "transfer",
     args: [address, daiDrop],
+    nonce: transactionCount + 2,
   });
 
   return res.status(200).json({

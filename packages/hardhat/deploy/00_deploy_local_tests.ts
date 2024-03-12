@@ -30,7 +30,7 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
     autoMine: true,
   });
 
-  await deploy("ZupassUserRegistry", {
+  await deploy("SemaphoreUserRegistry", {
     from: deployer,
     // Contract constructor arguments
     log: true,
