@@ -5,7 +5,6 @@ import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { useZuAuth } from "zuauth";
 import { MetaHeader } from "~~/components/MetaHeader";
-// import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
 import { notification } from "~~/utils/scaffold-eth";
 import { VALID_EVENT_IDS } from "~~/utils/zupassConstants";
 
@@ -87,21 +86,13 @@ const Home: NextPage = () => {
     }
   };
 
-  //   // mintItem verifies the proof on-chain and mints an NFT
-  //   const { writeAsync: mintNFT, isLoading: isMintingNFT } = useScaffoldContractWrite({
-  //     contractName: "YourCollectible",
-  //     functionName: "mintItem",
-  //     // @ts-ignore TODO: fix the type later with readonly fixed length bigInt arrays
-  //     args: [pcd ? generateWitness(JSON.parse(pcd)) : undefined],
-  //   });
-
   return (
     <>
       <MetaHeader />
       <div className="h-screen flex flex-col items-center justify-center gap-16 px-4 sm:px-8">
         <Image
           alt="ETH Latam logo"
-          className="cursor-pointer"
+          className="cursor-pointer px-4"
           src="/logo_black.svg"
           width="125"
           height="125"

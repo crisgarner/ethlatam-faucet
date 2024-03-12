@@ -1,5 +1,5 @@
-import DaiContract from "../../../hardhat/deployments/localhost/DAI.json";
-import SemaphoreUserRegistryContract from "../../../hardhat/deployments/localhost/SemaphoreUserRegistry.json";
+import DaiContract from "./contracts/DAI.json";
+import SemaphoreUserRegistryContract from "./contracts/SemaphoreUserRegistry.json";
 import { ZKEdDSAEventTicketPCDPackage } from "@pcd/zk-eddsa-event-ticket-pcd";
 import { NextApiRequest, NextApiResponse } from "next";
 import { hexToBigInt } from "viem";
@@ -81,7 +81,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // ## Actions
   const registryResult = await localWalletClient.writeContract({
     account: account,
-    address: "0xCb93dfe111e8441367bb58457AaaF5c2fd4C525B",
+    address: SemaphoreUserRegistryContract.address,
     abi: SemaphoreUserRegistryContract.abi,
     functionName: "addUser",
     args: [address, semaphoreId],
@@ -98,7 +98,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   await localWalletClient.writeContract({
     account: account,
-    address: "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1",
+    address: DaiContract.address,
     abi: DaiContract.abi,
     functionName: "transfer",
     args: [address, daiDrop],
