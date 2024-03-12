@@ -17,7 +17,7 @@ import { useAutoConnect, useNetworkColor } from "~~/hooks/scaffold-eth";
 import { getBlockExplorerAddressLink, getTargetNetwork } from "~~/utils/scaffold-eth";
 
 /**
- * Custom Wagmi Connect Button (watch balance + custom design)
+ * Custom Wagmi Connect tton (watch balance + custom design)
  */
 export const RainbowKitCustomConnectButton = () => {
   useAutoConnect();
@@ -50,7 +50,7 @@ export const RainbowKitCustomConnectButton = () => {
                 return (
                   <div className="dropdown dropdown-end">
                     <label tabIndex={0} className="btn btn-error btn-sm dropdown-toggle gap-1">
-                      <span>Wrong network</span>
+                      <span>Red Equivocada</span>
                       <ChevronDownIcon className="h-6 w-4 ml-2 sm:ml-0" />
                     </label>
                     <ul
@@ -65,7 +65,7 @@ export const RainbowKitCustomConnectButton = () => {
                         >
                           <ArrowsRightLeftIcon className="h-6 w-4 ml-2 sm:ml-0" />
                           <span className="whitespace-nowrap">
-                            Switch to <span style={{ color: networkColor }}>{configuredNetwork.name}</span>
+                            Cambiar a <span style={{ color: networkColor }}>{configuredNetwork.name}</span>
                           </span>
                         </button>
                       </li>
@@ -75,7 +75,7 @@ export const RainbowKitCustomConnectButton = () => {
                           type="button"
                           onClick={() => disconnect()}
                         >
-                          <ArrowLeftOnRectangleIcon className="h-6 w-4 ml-2 sm:ml-0" /> <span>Disconnect</span>
+                          <ArrowLeftOnRectangleIcon className="h-6 w-4 ml-2 sm:ml-0" /> <span>Desconectar</span>
                         </button>
                       </li>
                     </ul>
@@ -105,7 +105,7 @@ export const RainbowKitCustomConnectButton = () => {
                               className="text-xl font-normal h-6 w-4 cursor-pointer ml-2 sm:ml-0"
                               aria-hidden="true"
                             />
-                            <span className=" whitespace-nowrap">Copy address</span>
+                            <span className=" whitespace-nowrap">Copiar address</span>
                           </div>
                         ) : (
                           <CopyToClipboard
@@ -122,7 +122,7 @@ export const RainbowKitCustomConnectButton = () => {
                                 className="text-xl font-normal h-6 w-4 cursor-pointer ml-2 sm:ml-0"
                                 aria-hidden="true"
                               />
-                              <span className=" whitespace-nowrap">Copy address</span>
+                              <span className=" whitespace-nowrap">Copiar address</span>
                             </div>
                           </CopyToClipboard>
                         )}
@@ -130,7 +130,7 @@ export const RainbowKitCustomConnectButton = () => {
                       <li>
                         <label htmlFor="qrcode-modal" className="btn-sm !rounded-xl flex gap-3 py-3">
                           <QrCodeIcon className="h-6 w-4 ml-2 sm:ml-0" />
-                          <span className="whitespace-nowrap">View QR Code</span>
+                          <span className="whitespace-nowrap">Ver Código QR</span>
                         </label>
                       </li>
                       <li>
@@ -142,7 +142,7 @@ export const RainbowKitCustomConnectButton = () => {
                             rel="noopener noreferrer"
                             className="whitespace-nowrap"
                           >
-                            View on Block Explorer
+                            Ver en Block Explorer
                           </a>
                         </button>
                       </li>
@@ -152,7 +152,7 @@ export const RainbowKitCustomConnectButton = () => {
                           type="button"
                           onClick={() => disconnect()}
                         >
-                          <ArrowLeftOnRectangleIcon className="h-6 w-4 ml-2 sm:ml-0" /> <span>Disconnect</span>
+                          <ArrowLeftOnRectangleIcon className="h-6 w-4 ml-2 sm:ml-0" /> <span>Desconectar</span>
                         </button>
                       </li>
                     </ul>

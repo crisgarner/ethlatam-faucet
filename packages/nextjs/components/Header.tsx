@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useDarkMode } from "usehooks-ts";
 import { Bars3Icon } from "@heroicons/react/24/outline";
-import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
+import { RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
 
 /**
@@ -51,7 +51,6 @@ export const Header = () => {
       </div>
       <div className="navbar-end flex-grow">
         <RainbowKitCustomConnectButton />
-        <FaucetButton />
       </div>
     </div>
   );

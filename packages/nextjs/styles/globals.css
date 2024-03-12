@@ -53,7 +53,7 @@ p {
   font-family: 'Helvetica-Bold';
   src: url('../fonts/HelveticaNeueLTStd-Bold.otf') format('opentype');
  }
- 
+
  @font-face {
   font-family: 'Helvetica';
   src: url('../fonts/HelveticaNeueLTStd-Roman.otf') format('opentype');
