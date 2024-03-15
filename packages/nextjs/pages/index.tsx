@@ -79,7 +79,7 @@ const Home: NextPage = () => {
     } else {
       notification.success(
         <>
-          <p className="font-bold m-0">Backend Verified!</p>
+          <p className="font-bold m-0">Usuario Registrado!</p>
           <p className="m-0">{data?.message}</p>
         </>,
       );
